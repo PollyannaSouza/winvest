@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dashboard',
-    'login'
 ]
 
 MIDDLEWARE = [
@@ -79,8 +78,15 @@ WSGI_APPLICATION = 'winvest.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'winvest',      # Nome do banco de dados
+        'USER': 'admin',          # Usuário do banco de dados
+        'PASSWORD': 'admin',        # Senha do banco de dados
+        'HOST': 'localhost',           # Host onde o MySQL está sendo executado (normalmente localhost)
+        'PORT': '3306',                # Porta padrão do MySQL é 3306
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
@@ -122,3 +128,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
