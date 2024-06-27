@@ -5,8 +5,10 @@
   --ligth-green: #e6fcfd;
   --bg-fundo-verde: #9cf4f6;
   --hover-green: #04aab0;
+  --input-bg: #639799;
   --main-green: #024f52;
   --shadow: 2px 4px 4px 1px rgba(2, 79, 82, 0.2);
+  --shadow-popup: 2px 4px 10px 1px rgba(2, 79, 82, 0.7);
 }
 
 * {
@@ -47,22 +49,43 @@
     margin-bottom: 40px;
   }
 
-  & .btn-add-operacao {
+  & .box-operacoes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 1rem;
+  }
+
+  & .btn-add-compra {
     padding: 6px 20px;
     border: 2px solid var(--main-green);
-    border-radius: 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ligth-green);
+    background-color: var(--main-green);
+    cursor: pointer;
+    transition: background-color, color, .2s ease-in;
+  }
+
+  & .btn-add-venda {
+    padding: 6px 20px;
+    border: 2px solid var(--main-green);
+    border-radius: 8px;
     font-size: 16px;
     font-weight: 500;
     color: var(--main-green);
     background-color: transparent;
     cursor: pointer;
     transition: background-color, color, .2s ease-in;
-    
   }
 }
 
-.btn-add-operacao:hover {
-  font-weight: 700;
+.btn-add-compra:hover {
+  color: var(--main-green);
+  background-color: transparent;
+}
+.btn-add-venda:hover {
   color: var(--ligth-green);
   background-color: var(--main-green);
 }
@@ -203,4 +226,124 @@
     box-shadow: var(--shadow);
   }
 
+}
+
+.popup-compra {
+  margin: 5% auto;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 20px;
+  border-radius: 16px;
+  color: var(--bg-fundo-branco);
+  background-color: var(--main-green);
+  box-shadow:var(--shadow-popup);
+
+  & .popup-titulo-compra {
+    font-weight: 700;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  & input, select {
+    width: 100%;
+    height: 32px;
+    border-radius: 4px;
+    border: none;
+    margin-bottom: 10px;
+    color: var(--bg-fundo-branco);
+    background-color: var(--input-bg);
+    padding: 8px;
+  }
+  
+  & #input_codigo {
+    text-transform: uppercase;
+  }
+}
+
+.popup-venda {
+  margin: 5% auto;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 20px;
+  border-radius: 16px;
+  color: var(--bg-fundo-branco);
+  background-color: var(--main-green);
+  box-shadow:var(--shadow-popup);
+
+  & .popup-titulo-venda {
+    font-weight: 700;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  & input, select {
+    width: 100%;
+    height: 32px;
+    border-radius: 4px;
+    border: none;
+    margin-bottom: 10px;
+    color: var(--bg-fundo-branco);
+    background-color: var(--input-bg);
+    padding: 8px;
+  }
+  
+  & #select_codigo {
+    text-transform: uppercase;
+  }
+}
+
+.btn-forms {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  margin-top: 10px;
+}
+
+.btn-cancel-form {
+  background-color: transparent;
+  border: none;
+  color: var(--bg-fundo-branco);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+& .btn-cancel-form:hover {
+  border-bottom: 1px solid var(--bg-fundo-branco);
+}
+
+.btn-confirm-form {
+  background-color: transparent;
+  border: 1px solid var(--bg-fundo-branco);
+  color: var(--bg-fundo-branco);
+  border-radius: 4px;
+  padding: 4px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+& .btn-confirm-form:hover {
+  background-color: var(--bg-fundo-branco);
+  color: var(--main-green);
+}
+
+.modal {
+  display: none; /* Escondido por padrão */
+  position: fixed; /* Fica fixo na tela */
+  z-index: 1; /* Sobrepõe outros elementos */
+  left: 0;
+  top: 0;
+  width: 100%; /* Largura completa */
+  height: 100%; /* Altura completa */
+  overflow: auto; /* Habilita rolagem se necessário */
+  background-color: rgba(0, 0, 0, 0.1); /* Fundo semitransparente */
+  backdrop-filter: blur(5px); /* Desfoca o fundo */
 }

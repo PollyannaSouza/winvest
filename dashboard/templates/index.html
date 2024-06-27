@@ -73,12 +73,73 @@
 
     <div class="box-bemvindo-ativo">
       <h1 class="titulo-bemvindo">Bem vindo, {{nome}}.</h1>
-      <div class="box-btn-adicionar-operacao">
-        <a href="" class="link-btn-add-operacao">
-          <button class="btn-add-operacao">
-            <span>+ Adicionar operação</span>
+
+      <div class="box-operacoes">
+        <div class="box-btn-adicionar-compra">
+          <button class="btn-add-compra" id="openModalBtnCompra">
+            <span>+ Comprar ativo</span>
           </button>
-        </a>
+        </div>
+        <div class="box-btn-adicionar-venda">
+          <button class="btn-add-venda" id="openModalBtnVenda">
+            <span>- Vender ativo</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalCompra" class="modal">
+      <div class="popup-compra">
+        <div class="popup-titulo-compra">
+          <span>Comprar ativo</span>
+        </div>
+        <form action="form-compra-ativo">
+          <label for="input_codigo">Código ativo</label>
+          <input type="text" id="input_codigo" required>
+          
+          <label for="select_setor">Setor</label>
+          <select id="select_setor" required>
+          </select>
+          
+          <label for="categoria_select">Categoria</label>
+          <select id="categoria_select" required>
+          </select>
+          
+          <label for="input_valor_uni">Valor unitário</label>
+          <input type="text" id="input_valor_uni" placeholder="Ex: 4,50" required>
+          
+          <label for="input_qtd">Quantidade total</label>
+          <input type="number" id="input_qtd" required>
+          
+          <div class="btn-forms">
+            <button class="btn-cancel-form" type="reset" id="closeModalBtnCompra">Cancelar</button>
+            <button class="btn-confirm-form" type="submit" >Confirmar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="modalVenda" class="modal">
+      <div class="popup-venda">
+        <div class="popup-titulo-venda">
+          <span>Vender ativo</span>
+        </div>
+        <form action="form-venda-ativo">
+          <label for="select_codigo">Selecione o ativo</label>
+          <select id="select_codigo" required>
+          </select>
+          
+          <label for="input_valor_uni">Valor unitário</label>
+          <input type="text" id="input_valor_uni" placeholder="Ex: 4,50" required>
+          
+          <label for="input_qtd">Quantidade total</label>
+          <input type="number" id="input_qtd" required>
+          
+          <div class="btn-forms">
+            <button class="btn-cancel-form" type="reset" id="closeModalBtnVenda">Cancelar</button>
+            <button class="btn-confirm-form" type="submit" >Confirmar</button>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -172,6 +233,7 @@
 
   </section>
 
+  <script src="/dashboard/static/javascript/popup.js"></script>
 </body>
 
 </html>
