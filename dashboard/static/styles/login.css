@@ -1,105 +1,102 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 :root {
-    --bg-fundo-branco: #fff;
-    --ligth-green: #e6fcfd;
-    --bg-fundo-verde: #9cf4f6;
-    --hover-green: #04aab0;
-    --main-green: #024f52;
-    --shadow: 0px 0px 15px 1px rgba(2, 79, 82, 0.3);
+  --bg-fundo-branco: #fff;
+  --ligth-green: #e6fcfd;
+  --bg-fundo-verde: #9cf4f6;
+  --hover-green: #04aab0;
+  --main-green: #024f52;
+  --shadow: 0px 0px 15px 1px rgba(2, 79, 82, 0.3);
 }
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    font-family: "Poppins", sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
 }
 
 #bg-principal {
-    background-color: var(--bg-fundo-verde);
-    height: 90vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: var(--bg-fundo-verde);
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .box_login {
-    width: 360px;
-    height: 440px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    padding: 40px 20px;
-    background-color: var(--main-green);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
+  width: 360px;
+  height: 440px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 20px;
+  background-color: var(--main-green);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
 .box_logo {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 
-    & .logo_img > img {
-        width: 60px;
-    }
+  & .logo_img > img {
+    width: 60px;
+  }
 }
 
-#login_email, 
+#login_email,
 #login_senha {
-    height: 40px;
-    width: 240px;
-    border-radius: 4px;
-    border: none;
-    padding: 8px;
-    color: var(--main-green);
-    background-color: var(--ligth-green);
-    
+  height: 40px;
+  width: 240px;
+  border-radius: 4px;
+  border: none;
+  padding: 8px;
+  color: var(--main-green);
+  background-color: var(--ligth-green);
 }
 
 #btn_login {
-    height: 40px;
-    width: 150px;
-    border-radius: 4px;
-    border: none;
-    padding: 8px;
-    margin-top: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--ligth-green);
-    background-color: var(--hover-green);
-    cursor: pointer;
-    box-sizing: border-box;
+  height: 40px;
+  width: 150px;
+  border-radius: 4px;
+  border: none;
+  padding: 8px;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ligth-green);
+  background-color: var(--hover-green);
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
-#btn_login:hover{
-    border: 2px solid var(--bg-fundo-branco);
-    background-color: transparent;
+#btn_login:hover {
+  border: 2px solid var(--bg-fundo-branco);
+  background-color: transparent;
 }
 
 .box_esqueci_senha {
-    margin-top: -16px;
-} 
+  margin-top: -16px;
+}
 #link_esqueci_senha {
-    text-decoration: none;
-    font-size: 10px;
-    font-weight: 300;
-    color: var(--ligth-green);
-
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--ligth-green);
 }
 
-#link_esqueci_senha:hover{
-    font-weight: 600;
+#link_esqueci_senha:hover {
+  font-weight: 600;
 }
 
 label {
-    display: block;
-    color: var(--ligth-green);
-    padding-left: 4px;
-    margin-bottom: 4px;
-    font-weight: 700;
-
+  display: block;
+  color: var(--ligth-green);
+  padding-left: 4px;
+  margin-bottom: 4px;
+  font-weight: 700;
 }

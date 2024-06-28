@@ -2,54 +2,63 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Winvest</title>
+    <link
+      rel="shortcut icon"
+      href="{% static '/images/logo_final.png' %}"
+      type="image/x-icon" />
+    <link rel="stylesheet" href="{% static '/styles/login.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://fontawesome.com/icons/newspaper?f=classic&s=solid" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login | Winvest</title>
-  <link rel="shortcut icon" href="{% static '/images/logo_final.png' %}" type="image/x-icon">
-  <link rel="stylesheet" href="{% static '/styles/login.css' %}" />
-  <link rel="stylesheet" href="https://fontawesome.com/icons/newspaper?f=classic&s=solid">
-</head>
-
-<body id="bg-principal">
-
-  <section class="box_login">
-    <div class="box_logo">
-      <div class="logo_img">
-        <img src="{% static '/images/logo_final.png' %}" alt="">
+  <body id="bg-principal">
+    <section class="box_login">
+      <div class="box_logo">
+        <div class="logo_img">
+          <img src="{% static '/images/logo_final.png' %}" alt="" />
+        </div>
       </div>
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="box_login_email">
+          <label for="login_email">E-mail</label>
+          <input
+            type="email"
+            name="email"
+            id="login_email"
+            placeholder="Digite seu e-mail"
+            required />
+        </div>
+        <div class="box_login_senha">
+          <label for="login_senha">Senha</label>
+          <input
+            type="password"
+            name="senha"
+            id="login_senha"
+            placeholder="Digite sua senha"
+            required />
+        </div>
+        <div class="box_button">
+          <button id="btn_login" type="submit">Acessar</button>
+        </div>
+      </form>
+      <div class="box_esqueci_senha">
+        <a href="." id="link_esqueci_senha">Esqueci minha senha</a>
+      </div>
+    </section>
+
+    <!-- Exibição de mensagens de aviso -->
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <div class="alert alert-warning">{{ message }}</div>
+      {% endfor %}
     </div>
-    <form method="post" action="{% url 'login' %}">
-      {% csrf_token %}
-      <div class="box_login_email">
-        <label for="login_email">E-mail</label>
-        <input type="email" name="email" id="login_email" placeholder="Digite seu e-mail" required>
-      </div>
-      <div class="box_login_senha">
-        <label for="login_senha">Senha</label>
-        <input type="password" name="senha" id="login_senha" placeholder="Digite sua senha" required>
-      </div>
-      <div class="box_button">
-        <button id="btn_login" type="submit">Acessar</button>
-      </div>
-    </form>
-    <div class="box_esqueci_senha">
-      <a href="." id="link_esqueci_senha">Esqueci minha senha</a>
-    </div>
-  </section>
-
-<!-- Exibição de mensagens de aviso -->
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    <div class="alert alert-warning">
-        {{ message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-</body>
-
+    {% endif %}
+  </body>
 </html>
