@@ -114,6 +114,10 @@
       margin: 0 auto;
       border-radius: 8px;
     }
+    & #myChart{
+      width: 100%px; 
+      height: 325px
+    }
   }
 }
 

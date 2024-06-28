@@ -15,6 +15,7 @@
     <link
       rel="stylesheet"
       href="https://fontawesome.com/icons/newspaper?f=classic&s=solid" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   </head>
 
   <body id="bg-principal">
@@ -116,7 +117,10 @@
             <input type="number" id="input_qtd" required />
 
             <div class="btn-forms">
-              <button class="btn-cancel-form" type="reset" id="closeModalBtnCompra">
+              <button
+                class="btn-cancel-form"
+                type="reset"
+                id="closeModalBtnCompra">
                 Cancelar
               </button>
               <button class="btn-confirm-form" type="submit">Confirmar</button>
@@ -163,7 +167,7 @@
           <div class="titulo-grafico">
             <h3>AÇÃO X</h3>
           </div>
-          <h1 style="text-align: center; margin-top: 15%">GRÁFICO FICA AQUI</h1>
+          <div id="myChart"></div>
         </div>
       </div>
       <!-- fim 'box-grafico-principal'-->
@@ -179,7 +183,6 @@
           {% endfor %}
         </div>
       </div>
-
 
       <div class="frame-estatisticas">
         <h2>Estatísticas</h2>
@@ -216,7 +219,6 @@
       </div>
       <!-- fim 'frame-estatisicas'-->
 
-
       <div class="box-news">
         <h2>Últimas notícias</h2>
         {% for noticia in noticias|slice:"-2:" %}
@@ -229,5 +231,26 @@
     </section>
 
     <script src="{% static '/javascript/popup.js' %}"></script>
+    <script>
+      function fetchData() {
+        fetch("{% url 'chart_data' %}")
+          .then((response) => response.json())
+          .then((data) => {
+            var trace = {
+              x: data.x,
+              y: data.y,
+              type: "scatter",
+            };
+
+            var layout = {
+              autosize: true
+            };
+            var config = {responsive: true};
+
+            Plotly.newPlot("myChart", [trace], layout, config);
+          });
+      }
+      fetchData();
+    </script>
   </body>
 </html>
