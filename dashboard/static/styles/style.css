@@ -37,12 +37,11 @@
   }
 }
 
-.box-bemvindo-ativo {
+.box-bemvindo-operacao {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
-  
   & .titulo-bemvindo {
     color: var(--main-green);
     font-style: normal;
@@ -65,7 +64,7 @@
     color: var(--ligth-green);
     background-color: var(--main-green);
     cursor: pointer;
-    transition: background-color, color, .2s ease-in;
+    transition: background-color, color, 0.2s ease-in;
   }
 
   & .btn-add-venda {
@@ -77,7 +76,7 @@
     color: var(--main-green);
     background-color: transparent;
     cursor: pointer;
-    transition: background-color, color, .2s ease-in;
+    transition: background-color, color, 0.2s ease-in;
   }
 }
 
@@ -129,8 +128,7 @@
   overflow-x: visible;
   /* box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1); */
 
-
-  >h2 {
+  > h2 {
     margin-bottom: 10px;
   }
 
@@ -142,7 +140,7 @@
     height: 100%;
     overflow-y: scroll;
     overflow-x: visible;
-    
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -169,7 +167,6 @@
     }
   }
 }
-
 
 .frame-estatisticas {
   display: inline-flex;
@@ -208,7 +205,6 @@
   }
 }
 
-
 .box-news {
   display: inline-flex;
   flex-direction: column;
@@ -225,7 +221,6 @@
     background-color: var(--ligth-green);
     box-shadow: var(--shadow);
   }
-
 }
 
 .popup-compra {
@@ -239,7 +234,7 @@
   border-radius: 16px;
   color: var(--bg-fundo-branco);
   background-color: var(--main-green);
-  box-shadow:var(--shadow-popup);
+  box-shadow: var(--shadow-popup);
 
   & .popup-titulo-compra {
     font-weight: 700;
@@ -248,7 +243,8 @@
     margin-bottom: 10px;
   }
 
-  & input, select {
+  & input,
+  select {
     width: 100%;
     height: 32px;
     border-radius: 4px;
@@ -258,7 +254,7 @@
     background-color: var(--input-bg);
     padding: 8px;
   }
-  
+
   & #input_codigo {
     text-transform: uppercase;
   }
@@ -275,7 +271,7 @@
   border-radius: 16px;
   color: var(--bg-fundo-branco);
   background-color: var(--main-green);
-  box-shadow:var(--shadow-popup);
+  box-shadow: var(--shadow-popup);
 
   & .popup-titulo-venda {
     font-weight: 700;
@@ -284,7 +280,8 @@
     margin-bottom: 10px;
   }
 
-  & input, select {
+  & input,
+  select {
     width: 100%;
     height: 32px;
     border-radius: 4px;
@@ -294,7 +291,7 @@
     background-color: var(--input-bg);
     padding: 8px;
   }
-  
+
   & #select_codigo {
     text-transform: uppercase;
   }
@@ -315,7 +312,7 @@
   box-sizing: border-box;
   cursor: pointer;
 }
-& .btn-cancel-form:hover {
+.btn-cancel-form:hover {
   border-bottom: 1px solid var(--bg-fundo-branco);
 }
 
@@ -330,7 +327,7 @@
   cursor: pointer;
   box-sizing: border-box;
 }
-& .btn-confirm-form:hover {
+.btn-confirm-form:hover {
   background-color: var(--bg-fundo-branco);
   color: var(--main-green);
 }
