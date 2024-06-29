@@ -1,17 +1,23 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from dashboard.src.login import login_user
-from dashboard.src.user import todos_ativos
 from django.http import JsonResponse
+
 import random
 
+from dashboard.src.user import get_total_por_ticker,get_noticias, nome_user
+
 def index(request, user_id):
-    params = todos_ativos(user_id)
-    #todo chamar mais uma função, para pegar o nome do usuário e passar tambpem no params, existe uma muito parecida no arquivo de login
+    noticias = get_noticias(user_id)
+    total_por_ticker = get_total_por_ticker(user_id)
+    nome_usuario = nome_user(user_id)
 
-    print(params)
-    return render(request, 'index.html', params) #todo pegar essas infos do parametros e colocar na tela com JINJA
-
+    context = {
+        'noticias': noticias,
+        'total_por_ticker': total_por_ticker,
+        'nome_usuario': nome_usuario
+    }
+    return render(request, 'index.html', context )
 
 def login_view(request):
     if request.method == 'POST':

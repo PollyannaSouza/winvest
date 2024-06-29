@@ -75,7 +75,7 @@
 
     <section class="body-principal">
       <div class="box-bemvindo-operacao">
-        <h1 class="titulo-bemvindo">Bem vindo, {{nome}}.</h1>
+        <h1 class="titulo-bemvindo">Bem vindo, {{nome_usuario}}.</h1>
 
         <div class="box-operacoes">
           <div class="box-btn-adicionar-compra">
@@ -243,9 +243,12 @@
             };
 
             var layout = {
-              autosize: true
+              autosize: true,
             };
-            var config = {responsive: true};
+            var config = { 
+            responsive: true,
+            displayModeBar: false 
+          };
 
             Plotly.newPlot("myChart", [trace], layout, config);
           });

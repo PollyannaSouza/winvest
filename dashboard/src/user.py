@@ -1,4 +1,5 @@
-import pdb
+from django.shortcuts import get_object_or_404
+from dashboard.models import Pessoa
 from django.db import connection
 
 def exec_query(query):
@@ -9,8 +10,7 @@ def exec_query(query):
         cursor.close()
         return [dict(zip(columns, row)) for row in rows]
 
-
-def todos_ativos(user_id): #todo entender e quebrar a função em menores
+def get_noticias(user_id):
     carteiras_id = exec_query(query=f"SELECT id_carteira FROM dashboard_carteira where id_pessoa_id={user_id};")[0]
     carteiras_id = carteiras_id['id_carteira']
 
@@ -19,23 +19,11 @@ def todos_ativos(user_id): #todo entender e quebrar a função em menores
     ids_operacoes = ','.join(ids_operacoes)
 
     operacoes = exec_query(query=f"SELECT * FROM dashboard_operacao where id_operacao in ({ids_operacoes});")
-    #print(operacoes)
     tickets_id = [str(d['id_operacao']) for d in operacoes]
 
     ids_tickets = ','.join(tickets_id)
 
     ativos = exec_query(query=f"SELECT * FROM dashboard_ativo where ticker in ({ids_tickets});")
-    #print(ativos)
-
-    #calcula o valor total de operações pra cara ticket
-    result_operacoes = {}
-
-    for op in operacoes:
-        if not result_operacoes.get(op['ticker_id']):
-            result_operacoes[op['ticker_id']] = 0
-        total = op['qtd_operacao'] * op['valor_un_operacao']
-        total = total if op['tipo_operacao'] == 'Compra' else -total
-        result_operacoes[op['ticker_id']] += float(total)
 
     id_news_ids = set()
     for item in ativos:
@@ -45,8 +33,36 @@ def todos_ativos(user_id): #todo entender e quebrar a função em menores
 
     noticias = exec_query(query=f"SELECT * FROM dashboard_news where id_news in ({id_news_ids_lista});")
 
-    return {
-        'total_por_ticker': result_operacoes,
-        'noticias': noticias
-    }
+    return noticias
 
+def get_total_por_ticker(user_id):
+    result_operacoes = exec_query(query=f"""
+                              SELECT
+                                    dc.valor_total_carteira,
+                                    dca.nome_categoria_ativo AS ativo_nome
+                                FROM
+                                    dashboard_carteira dc
+                                LEFT JOIN
+                                    dashboard_carteiraoperacao dco ON dc.id_carteira = dco.id_carteira_id
+                                LEFT JOIN
+                                    dashboard_operacao do ON dco.id_operacao_id = do.id_operacao
+                                LEFT JOIN
+                                    dashboard_ativo da ON do.ticker_id = da.ticker
+                                LEFT JOIN
+                                    dashboard_categoriaativo dca ON da.id_categoria_ativo_id = dca.id_categoria_ativo
+                                LEFT JOIN
+                                    dashboard_pessoa dp ON dc.id_pessoa_id = dp.id_pessoa
+                                WHERE
+                                    dp.id_pessoa = {user_id};
+                              """)
+    result = {i["ativo_nome"]:i["valor_total_carteira"] for i in result_operacoes}
+    
+    print(f"RESULT_OPERACOES: {result}")
+    return result
+
+
+def nome_user(user_id):
+    pessoa = get_object_or_404(Pessoa, id_pessoa=user_id)
+    partes_nome = pessoa.nome.split()
+    primeiro_nome = partes_nome[0] if partes_nome else ''
+    return primeiro_nome
