@@ -5,19 +5,21 @@ from django.http import JsonResponse
 
 import random
 
-from dashboard.src.user import get_total_por_ticker,get_noticias, nome_user
+from dashboard.src.user import get_total_por_ticker,get_noticias, nome_user, get_dados_grafico, get_cotacoes
 
 def index(request, user_id):
     noticias = get_noticias(user_id)
     total_por_ticker = get_total_por_ticker(user_id)
     nome_usuario = nome_user(user_id)
-
+    #cotacoes = get_cotacoes(total_por_ticker.keys())
     context = {
         'noticias': noticias,
         'total_por_ticker': total_por_ticker,
-        'nome_usuario': nome_usuario
+        'nome_usuario': nome_usuario,
+        'user_id': user_id,
+        #'cotacoes': cotacoes
     }
-    return render(request, 'index.html', context )
+    return render(request, 'index.html', context)
 
 def login_view(request):
     if request.method == 'POST':
@@ -31,10 +33,12 @@ def login_view(request):
             raise ValueError('Erro ao fazer o login')
     return render(request, 'login.html')
 
-def chart_data(request):
+def chart_data(request, user_id):
+    total_por_ticker = get_total_por_ticker(user_id)
+    labels, values = get_dados_grafico(total_por_ticker)
     data = {
-        'x': [1, 2, 3, 4, 5],
-        'y': [random.randint(0, 100) for _ in range(5)]
+        'values': values,
+        'labels': labels
     }
     return JsonResponse(data)
 

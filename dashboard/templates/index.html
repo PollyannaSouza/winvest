@@ -2,258 +2,293 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard | Winvest</title>
-    <link
-      rel="shortcut icon"
-      href="{% static '/images/logo_final.png' %}"
-      type="image/x-icon" />
-    <link rel="stylesheet" href="{% static '/styles/sidebar.css' %}" />
-    <link rel="stylesheet" href="{% static '/styles/style.css' %}" />
-    <link
-      rel="stylesheet"
-      href="https://fontawesome.com/icons/newspaper?f=classic&s=solid" />
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Winvest</title>
+  <link rel="shortcut icon" href="{% static '/images/logo_final.png' %}" type="image/x-icon" />
+  <link rel="stylesheet" href="{% static '/styles/sidebar.css' %}" />
+  <link rel="stylesheet" href="{% static '/styles/style.css' %}" />
+  <link rel="stylesheet" href="https://fontawesome.com/icons/newspaper?f=classic&s=solid" />
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    /* Estilo para cotações */
+    .box-cotacoes {
+      background-color: #f5f5f5;
+      padding: 20px;
+      margin-top: 20px;
+    }
 
-  <body id="bg-principal">
-    <div class="area"></div>
-    <nav class="main-menu">
-      <ul class="ul-logo">
-        <a href="/index.html">
-          <div class="logo-img">
-            <img src="{% static '/images/Ellipse.png' %}" alt="" id="img-1" />
-            <img src="{% static '/images/W.png' %}" alt="" id="img-2" />
-          </div>
-          <span>WINVEST</span>
+    .lista-cotacoes {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .cotacao {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      width: calc(50% - 20px);
+    }
+
+    .cotacao h3 {
+      margin-top: 0;
+    }
+
+    .cotacao.queda {
+      border-color: #ffcccc; /* Borda vermelha para queda */
+    }
+
+    .cotacao.aumento {
+      border-color: #ccffcc; /* Borda verde para aumento */
+    }
+
+    /* Estilo para notícias */
+    .box-news {
+      margin-top: 20px;
+    }
+
+    .news {
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .news h4 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .news p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body id="bg-principal">
+  <div class="area"></div>
+  <nav class="main-menu">
+    <ul class="ul-logo">
+      <a href="/index.html">
+        <div class="logo-img">
+          <img src="{% static '/images/Ellipse.png' %}" alt="" id="img-1" />
+          <img src="{% static '/images/W.png' %}" alt="" id="img-2" />
+        </div>
+        <span>WINVEST</span>
+      </a>
+    </ul>
+    <ul>
+      <li>
+        <a href="/index.html" class="a selected">
+          <i class="fa fa-home fa-2x"></i>
+          <span class="nav-text"> Dashboard </span>
         </a>
-      </ul>
-      <ul>
-        <li>
-          <a href="/index.html" class="a selected">
-            <i class="fa fa-home fa-2x"></i>
-            <span class="nav-text"> Dashboard </span>
-          </a>
-        </li>
-        <li class="has-subnav">
-          <a href="#">
-            <i class="fa fa-dollar fa-2x"></i>
-            <span class="nav-text"> Ativos </span>
-          </a>
-        </li>
-        <li class="has-subnav">
-          <a href="#">
-            <i class="fa fa-arrow-circle-o-right fa-2x"></i>
-            <span class="nav-text"> Operações </span>
-          </a>
-        </li>
-        <li class="has-subnav">
-          <a href="#">
-            <i class="fa fa-globe fa-2x"></i>
-            <span class="nav-text"> Notícias </span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-bar-chart-o fa-2x"></i>
-            <span class="nav-text"> Estatísticas </span>
-          </a>
-        </li>
-      </ul>
+      </li>
+      <li class="has-subnav">
+        <a href="#">
+          <i class="fa fa-dollar fa-2x"></i>
+          <span class="nav-text"> Ativos </span>
+        </a>
+      </li>
+      <li class="has-subnav">
+        <a href="#">
+          <i class="fa fa-arrow-circle-o-right fa-2x"></i>
+          <span class="nav-text"> Operações </span>
+        </a>
+      </li>
+      <li class="has-subnav">
+        <a href="#">
+          <i class="fa fa-globe fa-2x"></i>
+          <span class="nav-text"> Notícias </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fa fa-bar-chart-o fa-2x"></i>
+          <span class="nav-text"> Estatísticas </span>
+        </a>
+      </li>
+    </ul>
 
-      <ul class="logout">
-        <li>
-          <a href="#">
-            <i class="fa fa-power-off fa-2x"></i>
-            <span class="nav-text"> Sair </span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <ul class="logout">
+      <li>
+        <a href="#">
+          <i class="fa fa-power-off fa-2x"></i>
+          <span class="nav-text"> Sair </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
-    <section class="body-principal">
-      <div class="box-bemvindo-operacao">
-        <h1 class="titulo-bemvindo">Bem vindo, {{nome_usuario}}.</h1>
+  <section class="body-principal">
+    <div class="box-bemvindo-operacao">
+      <h1 class="titulo-bemvindo">Bem vindo, {{nome_usuario}}.</h1>
 
-        <div class="box-operacoes">
-          <div class="box-btn-adicionar-compra">
-            <button class="btn-add-compra" id="openModalBtnCompra">
-              <span>+ Comprar ativo</span>
+      <div class="box-operacoes">
+        <div class="box-btn-adicionar-compra">
+          <button class="btn-add-compra" id="openModalBtnCompra">
+            <span>+ Comprar ativo</span>
+          </button>
+        </div>
+        <div class="box-btn-adicionar-venda">
+          <button class="btn-add-venda" id="openModalBtnVenda">
+            <span>- Vender ativo</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalCompra" class="modal">
+      <div class="popup-compra">
+        <div class="popup-titulo-compra">
+          <span>Comprar ativo</span>
+        </div>
+        <form action="form-compra-ativo">
+          <label for="input_codigo">Código ativo</label>
+          <input type="text" id="input_codigo" required />
+
+          <label for="select_setor">Setor</label>
+          <select id="select_setor" required></select>
+
+          <label for="categoria_select">Categoria</label>
+          <select id="categoria_select" required></select>
+
+          <label for="input_valor_uni">Valor unitário</label>
+          <input
+            type="text"
+            id="input_valor_uni"
+            placeholder="Ex: 4,50"
+            required />
+
+          <label for="input_qtd">Quantidade total</label>
+          <input type="number" id="input_qtd" required />
+
+          <div class="btn-forms">
+            <button
+              class="btn-cancel-form"
+              type="reset"
+              id="closeModalBtnCompra">
+              Cancelar
             </button>
+            <button class="btn-confirm-form" type="submit">Confirmar</button>
           </div>
-          <div class="box-btn-adicionar-venda">
-            <button class="btn-add-venda" id="openModalBtnVenda">
-              <span>- Vender ativo</span>
+        </form>
+      </div>
+    </div>
+
+    <div id="modalVenda" class="modal">
+      <div class="popup-venda">
+        <div class="popup-titulo-venda">
+          <span>Vender ativo</span>
+        </div>
+        <form action="form-venda-ativo">
+          <label for="select_codigo">Selecione o ativo</label>
+          <select id="select_codigo" required></select>
+
+          <label for="input_valor_uni">Valor unitário</label>
+          <input
+            type="text"
+            id="input_valor_uni"
+            placeholder="Ex: 4,50"
+            required />
+
+          <label for="input_qtd">Quantidade total</label>
+          <input type="number" id="input_qtd" required />
+
+          <div class="btn-forms">
+            <button
+              class="btn-cancel-form"
+              type="reset"
+              id="closeModalBtnVenda">
+              Cancelar
             </button>
+            <button class="btn-confirm-form" type="submit">Confirmar</button>
           </div>
-        </div>
+        </form>
       </div>
+    </div>
 
-      <div id="modalCompra" class="modal">
-        <div class="popup-compra">
-          <div class="popup-titulo-compra">
-            <span>Comprar ativo</span>
-          </div>
-          <form action="form-compra-ativo">
-            <label for="input_codigo">Código ativo</label>
-            <input type="text" id="input_codigo" required />
-
-            <label for="select_setor">Setor</label>
-            <select id="select_setor" required></select>
-
-            <label for="categoria_select">Categoria</label>
-            <select id="categoria_select" required></select>
-
-            <label for="input_valor_uni">Valor unitário</label>
-            <input
-              type="text"
-              id="input_valor_uni"
-              placeholder="Ex: 4,50"
-              required />
-
-            <label for="input_qtd">Quantidade total</label>
-            <input type="number" id="input_qtd" required />
-
-            <div class="btn-forms">
-              <button
-                class="btn-cancel-form"
-                type="reset"
-                id="closeModalBtnCompra">
-                Cancelar
-              </button>
-              <button class="btn-confirm-form" type="submit">Confirmar</button>
-            </div>
-          </form>
+    <div class="box-grafico-principal">
+      <div class="grafico">
+        <div class="titulo-grafico">
+          <h3>Distribuição de ativos em carteira</h3>
         </div>
+        <div id="myChart"></div>
       </div>
+    </div>
 
-      <div id="modalVenda" class="modal">
-        <div class="popup-venda">
-          <div class="popup-titulo-venda">
-            <span>Vender ativo</span>
-          </div>
-          <form action="form-venda-ativo">
-            <label for="select_codigo">Selecione o ativo</label>
-            <select id="select_codigo" required></select>
-
-            <label for="input_valor_uni">Valor unitário</label>
-            <input
-              type="text"
-              id="input_valor_uni"
-              placeholder="Ex: 4,50"
-              required />
-
-            <label for="input_qtd">Quantidade total</label>
-            <input type="number" id="input_qtd" required />
-
-            <div class="btn-forms">
-              <button
-                class="btn-cancel-form"
-                type="reset"
-                id="closeModalBtnVenda">
-                Cancelar
-              </button>
-              <button class="btn-confirm-form" type="submit">Confirmar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="box-grafico-principal">
-        <!-- <h2>grafico</h2> -->
-        <div class="grafico">
-          <div class="titulo-grafico">
-            <h3>AÇÃO X</h3>
-          </div>
-          <div id="myChart"></div>
-        </div>
-      </div>
-      <!-- fim 'box-grafico-principal'-->
-
-      <div class="box-lista-acoes">
-        <h2>Seus ativos</h2>
-        <div class="lista-acoes">
-          {% for ticker, valor in total_por_ticker.items %}
-          <div class="acao {% if forloop.first %}selected{% endif %}">
-            <h2>{{ ticker }}</h2>
-            <h2>R${{ valor }}</h2>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-
-      <div class="frame-estatisticas">
-        <h2>Estatísticas</h2>
-        <div class="box-estatistica">
-          <h4>Estatística 1</h4>
-          <h3>Indicador -</h3>
-          <h3>0,25%</h3>
-        </div>
-        <div class="box-estatistica">
-          <h4>Estatística 2</h4>
-          <h3>Indicador -</h3>
-          <h3>0,25%</h3>
-        </div>
-        <div class="box-estatistica">
-          <h4>Estatística 3</h4>
-          <h3>Indicador -</h3>
-          <h3>0,25%</h3>
-        </div>
-        <div class="box-estatistica">
-          <h4>Estatística 4</h4>
-          <h3>Indicador -</h3>
-          <h3>0,25%</h3>
-        </div>
-        <div class="box-estatistica">
-          <h4>Estatística 5</h4>
-          <h3>Indicador -</h3>
-          <h3>0,25%</h3>
-        </div>
-        <div class="box-estatistica">
-          <h4>Estatística 6</h4>
-          <h3>Indicador -</h3>
-          <h3>0,25%</h3>
-        </div>
-      </div>
-      <!-- fim 'frame-estatisicas'-->
-
-      <div class="box-news">
-        <h2>Últimas notícias</h2>
-        {% for noticia in noticias|slice:"-2:" %}
-        <div class="news">
-          <h4>{{ noticia.data_publicacao }}</h4>
-          <p>{{ noticia.arquivos_news }}</p>
+    <div class="box-lista-acoes">
+      <h2>Seus ativos</h2>
+      <div class="lista-acoes">
+        {% for ticker, valor in total_por_ticker.items %}
+        <div class="acao {% if forloop.first %}selected{% endif %}">
+          <h2>{{ ticker }}</h2>
+          <h2>R${{ valor }}</h2>
         </div>
         {% endfor %}
       </div>
-    </section>
+    </div>
 
-    <script src="{% static '/javascript/popup.js' %}"></script>
-    <script>
-      function fetchData() {
-        fetch("{% url 'chart_data' %}")
-          .then((response) => response.json())
-          .then((data) => {
-            var trace = {
-              x: data.x,
-              y: data.y,
-              type: "scatter",
-            };
+    <div class="box-cotacoes">
+      <h2>Cotações</h2>
+      <div class="lista-cotacoes">
+        {% for cotacao in cotacoes %}
+        <div class="cotacao {% if cotacao.regularMarketChange < 0 %}queda{% else %}aumento{% endif %}">
+          <h3>{{ cotacao.longName }}</h3>
+          <p>Símbolo: {{ cotacao.symbol }}</p>
+          <p>Variação: {{ cotacao.regularMarketChange }}</p>
+          <p>Variação (%): {{ cotacao.regularMarketChangePercent }}</p>
+          <p>Preço: {{ cotacao.regularMarketPrice }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
 
-            var layout = {
-              autosize: true,
-            };
-            var config = { 
-            responsive: true,
-            displayModeBar: false 
+    <div class="box-news">
+      <h2>Últimas notícias</h2>
+      {% for noticia in noticias|slice:"-2:" %}
+      <div class="news">
+        <h4>{{ noticia.data_publicacao }}</h4>
+        <p>{{ noticia.arquivos_news }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <script src="{% static '/javascript/popup.js' %}"></script>
+  <script>
+    function fetchData() {
+      var user_id = "{{ request.user_id }}";  // Supondo que você esteja passando o user_id através do template
+
+      fetch("{% url 'chart_data' user_id %}".replace('user_id', user_id))
+        .then((response) => response.json())
+        .then((data) => {
+          var values = data.values;
+          var labels = data.labels;
+
+          var trace = {
+            values: values,
+            labels: labels,
+            type: "pie",
           };
 
-            Plotly.newPlot("myChart", [trace], layout, config);
-          });
-      }
-      fetchData();
-    </script>
-  </body>
+          var layout = {
+            height: 400,
+            width: 500,
+          };
+          var config = {
+            responsive: true,
+            displayModeBar: false
+          };
+
+          Plotly.newPlot("myChart", [trace], layout, config);
+        });
+    }
+    fetchData();
+  </script>
+</body>
 </html>

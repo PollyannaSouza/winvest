@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'winvest',      # Nome do banco de dados
         'USER': 'root',          # Usuário do banco de dados
-        'PASSWORD': 'esports0211KLP#',        # Senha do banco de dados
+        'PASSWORD': 'admin',        # Senha do banco de dados
         'HOST': '127.0.0.1',           # Host onde o MySQL está sendo executado (normalmente localhost)
         'PORT': '3306',                # Porta padrão do MySQL é 3306
         'OPTIONS': {
