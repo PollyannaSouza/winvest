@@ -11,13 +11,13 @@ def index(request, user_id):
     noticias = get_noticias(user_id)
     total_por_ticker = get_total_por_ticker(user_id)
     nome_usuario = nome_user(user_id)
-    #cotacoes = get_cotacoes(total_por_ticker.keys())
+    cotacoes = get_cotacoes(total_por_ticker.keys())
     context = {
         'noticias': noticias,
         'total_por_ticker': total_por_ticker,
         'nome_usuario': nome_usuario,
         'user_id': user_id,
-        #'cotacoes': cotacoes
+        'cotacoes': cotacoes
     }
     return render(request, 'index.html', context)
 

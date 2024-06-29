@@ -101,4 +101,3 @@ def get_cotacoes(tickers):
 
     return result
 
-
