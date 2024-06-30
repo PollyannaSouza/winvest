@@ -91,54 +91,79 @@
         <div class="popup-titulo-compra">
           <span>Comprar ativo</span>
         </div>
-        <form action="./submit_form_compra">
-          <label for="input_codigo">Código ativo</label>
-          <input type="text" id="input_codigo" required />
-          
-          <label for="input_codigo">Descrição do ativo</label>
-          <input type="text" id="input_codigo" required />
+        <form id="formCompra">
+          {% csrf_token %}
+          <label for="codigo_ativo">Código ativo</label>
+          <input type="text" id="codigo_ativo" name="codigo_ativo" required />
 
-          <label for="input_codigo">Classe de risco do ativo</label>
-          <input type="text" id="input_codigo" required />
-          
-          <label for="select_setor">Setor</label>
-          <input type="text" id="input_codigo" required />
+          <label for="descricao_ativo">Descrição do ativo</label>
+          <input type="text" id="descricao_ativo" name="descricao_ativo" required />
 
-          <label for="categoria_select">Descrição do setor</label>
-          <input type="text" id="input_codigo" required />
+          <label for="classe_risco">Classe de risco do ativo</label>
+          <input type="text" id="classe_risco" name="classe_risco" required />
 
-          <label for="categoria_select">Data da operação</label>
-          <input type="date" id="input_codigo" required />
+          <label for="setor">Setor</label>
+          <input type="text" id="setor" name="setor" required />
 
-          <label for="input_valor_uni">Valor unitário</label>
-          <input
-            type="number"
-            id="input_valor_uni"
-            placeholder="Ex: 4,50"
-            required />
+          <label for="descricao_setor">Descrição do setor</label>
+          <input type="text" id="descricao_setor" name="descricao_setor" required />
 
-          <label for="input_qtd">Quantidade total</label>
-          <input type="number" id="input_qtd" required />
+          <label for="data_operacao">Data da operação</label>
+          <input type="date" id="data_operacao" name="data_operacao" required />
+
+          <label for="valor_unitario">Valor unitário</label>
+          <input type="number" id="valor_unitario" name="valor_unitario" placeholder="Ex: 4,50" required />
+
+          <label for="quantidade_total">Quantidade total</label>
+          <input type="number" id="quantidade_total" name="quantidade_total" required />
 
           <div class="btn-forms">
-            <button
-              class="btn-cancel-form"
-              type="reset"
-              id="closeModalBtnCompra">
-              Cancelar
-            </button>
+            <button class="btn-cancel-form" type="reset" id="closeModalBtnCompra">Cancelar</button>
             <button class="btn-confirm-form" type="submit">Confirmar</button>
           </div>
         </form>
       </div>
     </div>
 
+    <!-- JavaScript para enviar o formulário via AJAX -->
+    <script>
+    document.getElementById('formCompra').addEventListener('submit', function(event) {
+        event.preventDefault(); // Impede o comportamento padrão do formulário
+
+        const formData = new FormData(this);
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch("{% url 'submit_form_compra' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert(data.message); // Exibe mensagem de sucesso
+
+            // Fechar modal (opcional)
+            document.getElementById('modalCompra').style.display = 'none';
+
+            // Resetar formulário (opcional)
+            document.getElementById('formCompra').reset();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Ocorreu um erro ao enviar o formulário.'); // Exibe mensagem de erro
+        });
+    });
+    </script>
+
     <div id="modalVenda" class="modal">
       <div class="popup-venda">
         <div class="popup-titulo-venda">
           <span>Vender ativo</span>
         </div>
-        <form action="form-venda-ativo">
+        <form action="form-venda-ativo" method="post">
           <label for="select_codigo">Selecione o ativo</label>
           <select id="select_codigo" required></select>
 
@@ -215,52 +240,51 @@
 
   <script src="{% static '/javascript/popup.js' %}"></script>
   <script>
-    function fetchData() {
-  var user_id = "{{ request.user_id }}";  // Supondo que você esteja passando o user_id através do template
+        function fetchData() {
+      var user_id = "{{ request.user_id }}";  // Supondo que você esteja passando o user_id através do template
 
-  fetch("{% url 'chart_data' user_id %}".replace('user_id', user_id))
-    .then((response) => response.json())
-    .then((data) => {
-      var values = data.values;
-      var labels = data.labels;
+      fetch("{% url 'chart_data' user_id %}".replace('user_id', user_id))
+        .then((response) => response.json())
+        .then((data) => {
+          var values = data.values;
+          var labels = data.labels;
 
-      var trace = {
-        values: values,
-        labels: labels,
-        type: "pie",
-        textinfo: "label+percent",
-        insidetextorientation: "radial",
-        hole: 0.6  // Para criar um gráfico de pizza do tipo "donut"
-      };
+          var trace = {
+            values: values,
+            labels: labels,
+            type: "pie",
+            textinfo: "label+percent",
+            insidetextorientation: "radial",
+            hole: 0.6  // Para criar um gráfico de pizza do tipo "donut"
+          };
 
-      var layout = {
-        height: 350,
-        width: 550,
-        showlegend: true,
-        margin: {
-          b: 10,
-          t: 10,
-          pad: 4
-        },
-        paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)',
-        annotations: [],
-        domain: {
-          x: [0, 1],
-          y: [0, 1]
-        }
-      };
+          var layout = {
+            height: 350,
+            width: 550,
+            showlegend: true,
+            margin: {
+              b: 10,
+              t: 10,
+              pad: 4
+            },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            annotations: [],
+            domain: {
+              x: [0, 1],
+              y: [0, 1]
+            }
+          };
 
-      var config = {
-        responsive: true,
-        displayModeBar: false
-      };
+          var config = {
+            responsive: true,
+            displayModeBar: false
+          };
 
-      Plotly.newPlot("myChart", [trace], layout, config);
-    });
-}
-fetchData();
+          Plotly.newPlot("myChart", [trace], layout, config);
+        });
+    }
+    fetchData();
 
-  </script>
 </body>
 </html>

@@ -49,15 +49,44 @@ def chart_data(request, user_id):
 def index_view(request):
     return render(request, 'index.html')
 
+
 @csrf_exempt
 def submit_form_compra(request):
-    print('Dados recebidos para compra:', request)
     if request.method == 'POST':
         data = request.POST
-        print('Dados recebidos para compra:', dict(data))
+        codigo_ativo = data.get('codigo_ativo')
+        descricao_ativo = data.get('descricao_ativo')
+        classe_risco = data.get('classe_risco')
+        setor = data.get('setor')
+        descricao_setor = data.get('descricao_setor')
+        data_operacao = data.get('data_operacao')
+        valor_unitario = data.get('valor_unitario')
+        quantidade_total = data.get('quantidade_total')
+
+        # Print data to console for debugging purposes
+        print('Dados recebidos para compra:', {
+            'codigo_ativo': codigo_ativo,
+            'descricao_ativo': descricao_ativo,
+            'classe_risco': classe_risco,
+            'setor': setor,
+            'descricao_setor': descricao_setor,
+            'data_operacao': data_operacao,
+            'valor_unitario': valor_unitario,
+            'quantidade_total': quantidade_total,
+        })
+
         response_data = {
             'message': 'Dados de compra recebidos com sucesso!',
-            'dados': data
+            'dados': {
+                'codigo_ativo': codigo_ativo,
+                'descricao_ativo': descricao_ativo,
+                'classe_risco': classe_risco,
+                'setor': setor,
+                'descricao_setor': descricao_setor,
+                'data_operacao': data_operacao,
+                'valor_unitario': valor_unitario,
+                'quantidade_total': quantidade_total,
+            }
         }
         return JsonResponse(response_data)
     return JsonResponse({'error': 'Método não permitido'}, status=405)
