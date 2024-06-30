@@ -239,7 +239,7 @@
         {% for cotacao in cotacoes %}
         <div class="cotacao {% if cotacao.regularMarketChange < 0 %}queda{% else %}aumento{% endif %}">
           <h4>{{ cotacao.longName }}</h4>
-          <p><b>Símbolo:</b> {{ cotacao.symbol }}</p>
+          <p><b>Código:</b> {{ cotacao.symbol }}</p>
           <p><b>Variação:</b> R${{ cotacao.regularMarketChange }} ({{ cotacao.regularMarketChangePercent }}%)</p>
           <p><b>Preço:</b> R${{ cotacao.regularMarketPrice }}</p>
         </div>
@@ -252,7 +252,9 @@
       {% for noticia in noticias|slice:"-2:" %}
       <div class="news">
         <h4>{{ noticia.data_publicacao }}</h4>
-        <p>{{ noticia.arquivos_news }}</p>
+        <a href="{{ noticia.arquivos_news }}" target="_blank">
+          <p>{{ noticia.arquivos_news }}</p>
+        </a>
       </div>
       {% endfor %}
     </div>
@@ -276,8 +278,8 @@
           };
 
           var layout = {
-            height: 400,
-            width: 500,
+            // height: 100%,
+            // width: 100%,
           };
           var config = {
             responsive: true,
