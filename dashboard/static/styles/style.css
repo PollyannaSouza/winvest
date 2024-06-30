@@ -117,8 +117,13 @@
     & #myChart{
       width: 100%;
       height: 90%;
+      margin: auto;
     }
   }
+}
+
+.js-plotly-plot .plotly, .js-plotly-plot .plotly div{
+  margin: auto !important;
 }
 
 .box-lista-acoes {
