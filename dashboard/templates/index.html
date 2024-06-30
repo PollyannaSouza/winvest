@@ -13,7 +13,7 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <style>
     /* Estilo para cotações */
-    .box-cotacoes {
+    /* .box-cotacoes {
       background-color: #f5f5f5;
       padding: 20px;
       margin-top: 20px;
@@ -43,7 +43,7 @@
 
     .cotacao.aumento {
       border-color: #ccffcc; /* Borda verde para aumento */
-    }
+    } */
 
     /* Estilo para notícias */
     .box-news {
@@ -238,11 +238,10 @@
       <div class="lista-cotacoes">
         {% for cotacao in cotacoes %}
         <div class="cotacao {% if cotacao.regularMarketChange < 0 %}queda{% else %}aumento{% endif %}">
-          <h3>{{ cotacao.longName }}</h3>
-          <p>Símbolo: {{ cotacao.symbol }}</p>
-          <p>Variação: {{ cotacao.regularMarketChange }}</p>
-          <p>Variação (%): {{ cotacao.regularMarketChangePercent }}</p>
-          <p>Preço: {{ cotacao.regularMarketPrice }}</p>
+          <h4>{{ cotacao.longName }}</h4>
+          <p><b>Símbolo:</b> {{ cotacao.symbol }}</p>
+          <p><b>Variação:</b> R${{ cotacao.regularMarketChange }} ({{ cotacao.regularMarketChangePercent }}%)</p>
+          <p><b>Preço:</b> R${{ cotacao.regularMarketPrice }}</p>
         </div>
         {% endfor %}
       </div>
