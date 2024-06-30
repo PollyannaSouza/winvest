@@ -95,10 +95,25 @@ def submit_form_compra(request):
 def submit_form_venda(request):
     if request.method == 'POST':
         data = request.POST
-        print('Dados recebidos para venda:', data)
+        select_codigo = data.get('select_codigo')
+        data_operacao = data.get('data_operacao')
+        valor_unitario = data.get('valor_unitario')
+        quantidade_total = data.get('quantidade_total')
+
+        print('Dados recebidos para venda:', {
+            'select_codigo': select_codigo,
+            'data_operacao': data_operacao,
+            'valor_unitario': valor_unitario,
+            'quantidade_total': quantidade_total,
+        })
         response_data = {
             'message': 'Dados de venda recebidos com sucesso!',
-            'dados': data
+            'dados': {
+                'select_codigo': select_codigo,
+                'data_operacao': data_operacao,
+                'valor_unitario': valor_unitario,
+                'quantidade_total': quantidade_total,
+            }
         }
         return JsonResponse(response_data)
     return JsonResponse({'error': 'Método não permitido'}, status=405)

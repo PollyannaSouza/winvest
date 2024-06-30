@@ -125,7 +125,7 @@
       </div>
     </div>
 
-    <!-- JavaScript para enviar o formulário via AJAX -->
+    <!-- JavaScript para enviar o formulário de compra via AJAX -->
     <script>
     document.getElementById('formCompra').addEventListener('submit', function(event) {
         event.preventDefault(); // Impede o comportamento padrão do formulário
@@ -163,19 +163,25 @@
         <div class="popup-titulo-venda">
           <span>Vender ativo</span>
         </div>
-        <form action="form-venda-ativo" method="post">
+
+        <form id="formVenda" method="post">
+          {% csrf_token %}
           <label for="select_codigo">Selecione o ativo</label>
-          <select id="select_codigo" required></select>
+          <select id="select_codigo" name="select_codigo" required>
+            {% for ticker in total_por_ticker.items %}
+            <option value disabled selected hidden></option>
+            <option value="{{ ticker }}">{{ ticker }}</option>
+            {% endfor %}
+          </select>
 
-          <label for="input_valor_uni">Valor unitário</label>
-          <input
-            type="text"
-            id="input_valor_uni"
-            placeholder="Ex: 4,50"
-            required />
+          <label for="data_operacao">Data da operação</label>
+          <input type="date" id="data_operacao" name="data_operacao" required />
 
-          <label for="input_qtd">Quantidade total</label>
-          <input type="number" id="input_qtd" required />
+          <label for="valor_unitario">Valor unitário</label>
+          <input type="decinal" id="valor_unitario" name="valor_unitario" placeholder="Ex: 4,50" required />
+
+          <label for="quantidade_total">Quantidade total</label>
+          <input type="number" id="quantidade_total" name="quantidade_total" required />
 
           <div class="btn-forms">
             <button
@@ -189,6 +195,39 @@
         </form>
       </div>
     </div>
+
+    <!-- JavaScript para enviar o formulário de venda via AJAX -->
+    <script>
+      document.getElementById('formVenda').addEventListener('submit', function(event) {
+          event.preventDefault(); // Impede o comportamento padrão do formulário
+  
+          const formData = new FormData(this);
+          const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  
+          fetch("{% url 'submit_form_venda' %}", {
+              method: 'POST',
+              headers: {
+                  'X-CSRFToken': csrfToken
+              },
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log('Success:', data);
+              alert(data.message); // Exibe mensagem de sucesso
+  
+              // Fechar modal (opcional)
+              document.getElementById('modalVenda').style.display = 'none';
+  
+              // Resetar formulário (opcional)
+              document.getElementById('formVenda').reset();
+          })
+          .catch((error) => {
+              console.error('Error:', error);
+              alert('Ocorreu um erro ao enviar o formulário.'); // Exibe mensagem de erro
+          });
+      });
+      </script>
 
     <div class="box-grafico-principal">
       <div class="grafico">
@@ -285,6 +324,7 @@
         });
     }
     fetchData();
+  </script>
 
 </body>
 </html>
