@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from dashboard.src.login import login_user
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 import random
 
@@ -17,8 +19,10 @@ def index(request, user_id):
         'total_por_ticker': total_por_ticker,
         'nome_usuario': nome_usuario,
         'user_id': user_id,
-        'cotacoes': cotacoes
+        'cotacoes': cotacoes,
+        'ativos': list(total_por_ticker.keys())
     }
+    print(context['ativos'])
     return render(request, 'index.html', context)
 
 def login_view(request):
@@ -44,3 +48,28 @@ def chart_data(request, user_id):
 
 def index_view(request):
     return render(request, 'index.html')
+
+@csrf_exempt
+def submit_form_compra(request):
+    print('Dados recebidos para compra:', request)
+    if request.method == 'POST':
+        data = request.POST
+        print('Dados recebidos para compra:', dict(data))
+        response_data = {
+            'message': 'Dados de compra recebidos com sucesso!',
+            'dados': data
+        }
+        return JsonResponse(response_data)
+    return JsonResponse({'error': 'Método não permitido'}, status=405)
+
+@csrf_exempt
+def submit_form_venda(request):
+    if request.method == 'POST':
+        data = request.POST
+        print('Dados recebidos para venda:', data)
+        response_data = {
+            'message': 'Dados de venda recebidos com sucesso!',
+            'dados': data
+        }
+        return JsonResponse(response_data)
+    return JsonResponse({'error': 'Método não permitido'}, status=405)

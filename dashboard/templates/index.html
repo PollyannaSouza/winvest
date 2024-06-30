@@ -91,19 +91,28 @@
         <div class="popup-titulo-compra">
           <span>Comprar ativo</span>
         </div>
-        <form action="form-compra-ativo">
+        <form action="./submit_form_compra">
           <label for="input_codigo">Código ativo</label>
           <input type="text" id="input_codigo" required />
+          
+          <label for="input_codigo">Descrição do ativo</label>
+          <input type="text" id="input_codigo" required />
 
+          <label for="input_codigo">Classe de risco do ativo</label>
+          <input type="text" id="input_codigo" required />
+          
           <label for="select_setor">Setor</label>
-          <select id="select_setor" required></select>
+          <input type="text" id="input_codigo" required />
 
-          <label for="categoria_select">Categoria</label>
-          <select id="categoria_select" required></select>
+          <label for="categoria_select">Descrição do setor</label>
+          <input type="text" id="input_codigo" required />
+
+          <label for="categoria_select">Data da operação</label>
+          <input type="date" id="input_codigo" required />
 
           <label for="input_valor_uni">Valor unitário</label>
           <input
-            type="text"
+            type="number"
             id="input_valor_uni"
             placeholder="Ex: 4,50"
             required />
@@ -207,33 +216,51 @@
   <script src="{% static '/javascript/popup.js' %}"></script>
   <script>
     function fetchData() {
-      var user_id = "{{ request.user_id }}";  // Supondo que você esteja passando o user_id através do template
+  var user_id = "{{ request.user_id }}";  // Supondo que você esteja passando o user_id através do template
 
-      fetch("{% url 'chart_data' user_id %}".replace('user_id', user_id))
-        .then((response) => response.json())
-        .then((data) => {
-          var values = data.values;
-          var labels = data.labels;
+  fetch("{% url 'chart_data' user_id %}".replace('user_id', user_id))
+    .then((response) => response.json())
+    .then((data) => {
+      var values = data.values;
+      var labels = data.labels;
 
-          var trace = {
-            values: values,
-            labels: labels,
-            type: "pie",
-          };
+      var trace = {
+        values: values,
+        labels: labels,
+        type: "pie",
+        textinfo: "label+percent",
+        insidetextorientation: "radial",
+        hole: 0.6  // Para criar um gráfico de pizza do tipo "donut"
+      };
 
-          var layout = {
-            // height: 100%,
-            // width: 100%,
-          };
-          var config = {
-            responsive: true,
-            displayModeBar: false
-          };
+      var layout = {
+        height: 350,
+        width: 550,
+        showlegend: true,
+        margin: {
+          b: 10,
+          t: 10,
+          pad: 4
+        },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        annotations: [],
+        domain: {
+          x: [0, 1],
+          y: [0, 1]
+        }
+      };
 
-          Plotly.newPlot("myChart", [trace], layout, config);
-        });
-    }
-    fetchData();
+      var config = {
+        responsive: true,
+        displayModeBar: false
+      };
+
+      Plotly.newPlot("myChart", [trace], layout, config);
+    });
+}
+fetchData();
+
   </script>
 </body>
 </html>
