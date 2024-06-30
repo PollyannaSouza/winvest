@@ -100,4 +100,3 @@ def get_cotacoes(tickers):
             print(f'Ticket {ticker} não existe na API')
 
     return result
-
