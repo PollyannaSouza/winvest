@@ -7,16 +7,18 @@ import json
 
 import random
 
-from dashboard.src.user import get_total_por_ticker,get_noticias, nome_user, get_dados_grafico, get_cotacoes
+from dashboard.src.user import get_total_por_ticker,get_noticias, nome_user, get_dados_grafico, get_cotacoes, get_total_por_carteira
 
 def index(request, user_id):
     noticias = get_noticias(user_id)
     total_por_ticker = get_total_por_ticker(user_id)
+    total_por_carteira = get_total_por_carteira(user_id)
     nome_usuario = nome_user(user_id)
     cotacoes = get_cotacoes(total_por_ticker.keys())
     context = {
         'noticias': noticias,
         'total_por_ticker': total_por_ticker,
+        'total_por_carteira': total_por_carteira,
         'nome_usuario': nome_usuario,
         'user_id': user_id,
         'cotacoes': cotacoes,

@@ -41,25 +41,41 @@ def get_noticias(user_id):
 
 def get_total_por_ticker(user_id):
     result_operacoes = exec_query(query=f"""
-                              SELECT
-                                    dc.valor_total_carteira,
-                                    dca.nome_categoria_ativo AS ativo_nome
-                                FROM
-                                    dashboard_carteira dc
+                            SELECT 
+                                dco.valor_total_ativo,
+                                dca.nome_categoria_ativo AS ativo_nome
+                            FROM
+                                dashboard_carteiraoperacao dco
                                 LEFT JOIN
-                                    dashboard_carteiraoperacao dco ON dc.id_carteira = dco.id_carteira_id
+                                dashboard_carteira dc ON dc.id_carteira = dco.id_carteira_id
                                 LEFT JOIN
-                                    dashboard_operacao do ON dco.id_operacao_id = do.id_operacao
+                                dashboard_operacao do ON dco.id_operacao_id = do.id_operacao
                                 LEFT JOIN
-                                    dashboard_ativo da ON do.ticker_id = da.ticker
+                                dashboard_ativo da ON do.ticker_id = da.ticker
                                 LEFT JOIN
-                                    dashboard_categoriaativo dca ON da.id_categoria_ativo_id = dca.id_categoria_ativo
+                                dashboard_categoriaativo dca ON da.id_categoria_ativo_id = dca.id_categoria_ativo
                                 LEFT JOIN
-                                    dashboard_pessoa dp ON dc.id_pessoa_id = dp.id_pessoa
-                                WHERE
-                                    dp.id_pessoa = {user_id};
-                              """)
-    result = {i["ativo_nome"]: float(i["valor_total_carteira"]) for i in result_operacoes}
+                                dashboard_pessoa dp ON dc.id_pessoa_id = dp.id_pessoa
+                            WHERE
+                                dp.id_pessoa = {user_id};
+                            """)
+    result = {i["ativo_nome"]: float(i["valor_total_ativo"]) for i in result_operacoes}
+
+    print(f"RESULT_OPERACOES: {result}")
+    return result
+
+def get_total_por_carteira(user_id):
+    result_operacoes = exec_query(query=f"""
+                            SELECT
+                                dc.valor_total_carteira
+                            FROM
+                                dashboard_carteira dc
+                                    LEFT JOIN
+                                dashboard_pessoa dp ON dc.id_pessoa_id = dp.id_pessoa
+                            WHERE
+                                dp.id_pessoa = {user_id};
+                            """)
+    result = {float(i["valor_total_carteira"]) for i in result_operacoes}
 
     print(f"RESULT_OPERACOES: {result}")
     return result
