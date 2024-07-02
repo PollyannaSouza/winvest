@@ -61,7 +61,7 @@ def get_total_por_ticker(user_id):
                             """)
     result = {i["ativo_nome"]: float(i["valor_total_ativo"]) for i in result_operacoes}
 
-    print(f"RESULT_OPERACOES: {result}")
+    #print(f"RESULT_OPERACOES: {result}")
     return result
 
 def get_total_por_carteira(user_id):
@@ -77,7 +77,7 @@ def get_total_por_carteira(user_id):
                             """)
     result = {float(i["valor_total_carteira"]) for i in result_operacoes}
 
-    print(f"RESULT_OPERACOES: {result}")
+    #print(f"RESULT_OPERACOES: {result}")
     return result
 
 

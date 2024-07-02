@@ -70,7 +70,7 @@
 
   <section class="body-principal">
     <div class="box-bemvindo-operacao">
-      <h1 class="titulo-bemvindo">Bem vindo, {{nome_usuario}}.</h1>
+      <h1 class="titulo-bemvindo">Bem vindo, {{ nome_usuario }}.</h1>
 
       <div class="box-operacoes">
         <div class="box-btn-adicionar-compra">
@@ -93,6 +93,9 @@
         </div>
         <form id="formCompra">
           {% csrf_token %}
+          <!-- Adicione um campo oculto para armazenar o user_id -->
+          <input type="hidden" name="user_id" value="{{ request.user.id }}" />
+
           <label for="codigo_ativo">Código ativo</label>
           <input type="text" id="codigo_ativo" name="codigo_ativo" required />
 
@@ -112,7 +115,7 @@
           <input type="date" id="data_operacao" name="data_operacao" required />
 
           <label for="valor_unitario">Valor unitário</label>
-          <input type="number" id="valor_unitario" name="valor_unitario" placeholder="Ex: 4,50" required />
+          <input type="number" id="valor_unitario" name="valor_unitario" step="0.01" placeholder="Ex: 4.50" required />
 
           <label for="quantidade_total">Quantidade total</label>
           <input type="number" id="quantidade_total" name="quantidade_total" required />
@@ -125,86 +128,15 @@
       </div>
     </div>
 
-    <!-- JavaScript para enviar o formulário de compra via AJAX -->
     <script>
-    document.getElementById('formCompra').addEventListener('submit', function(event) {
-        event.preventDefault(); // Impede o comportamento padrão do formulário
-
-        const formData = new FormData(this);
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-        fetch("{% url 'submit_form_compra' %}", {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            alert(data.message); // Exibe mensagem de sucesso
-
-            // Fechar modal (opcional)
-            document.getElementById('modalCompra').style.display = 'none';
-
-            // Resetar formulário (opcional)
-            document.getElementById('formCompra').reset();
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('Ocorreu um erro ao enviar o formulário.'); // Exibe mensagem de erro
-        });
-    });
-    </script>
-
-    <div id="modalVenda" class="modal">
-      <div class="popup-venda">
-        <div class="popup-titulo-venda">
-          <span>Vender ativo</span>
-        </div>
-
-        <form id="formVenda" method="post">
-          {% csrf_token %}
-          <label for="select_codigo">Selecione o ativo</label>
-          <select id="select_codigo" name="select_codigo" required>
-            {% for ticker in total_por_ticker.items %}
-            <option value disabled selected hidden></option>
-            <option value="{{ ticker }}">{{ ticker }}</option>
-            {% endfor %}
-          </select>
-
-          <label for="data_operacao">Data da operação</label>
-          <input type="date" id="data_operacao" name="data_operacao" required />
-
-          <label for="valor_unitario">Valor unitário</label>
-          <input type="decinal" id="valor_unitario" name="valor_unitario" placeholder="Ex: 4,50" required />
-
-          <label for="quantidade_total">Quantidade total</label>
-          <input type="number" id="quantidade_total" name="quantidade_total" required />
-
-          <div class="btn-forms">
-            <button
-              class="btn-cancel-form"
-              type="reset"
-              id="closeModalBtnVenda">
-              Cancelar
-            </button>
-            <button class="btn-confirm-form" type="submit">Confirmar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- JavaScript para enviar o formulário de venda via AJAX -->
-    <script>
-      document.getElementById('formVenda').addEventListener('submit', function(event) {
+      document.getElementById('formCompra').addEventListener('submit', function(event) {
           event.preventDefault(); // Impede o comportamento padrão do formulário
-  
+
           const formData = new FormData(this);
           const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-  
-          fetch("{% url 'submit_form_venda' %}", {
+          const user_id = formData.get('user_id'); // Obtém o user_id do formulário
+
+          fetch(`{% url 'submit_form_compra' user_id=user_id %}`, {  // Corrige a passagem do user_id na URL reversa
               method: 'POST',
               headers: {
                   'X-CSRFToken': csrfToken
@@ -215,10 +147,78 @@
           .then(data => {
               console.log('Success:', data);
               alert(data.message); // Exibe mensagem de sucesso
-  
+
+              // Fechar modal (opcional)
+              document.getElementById('modalCompra').style.display = 'none';
+
+              // Resetar formulário (opcional)
+              document.getElementById('formCompra').reset();
+          })
+          .catch((error) => {
+              console.error('Error:', error);
+              alert('Ocorreu um erro ao enviar o formulário.'); // Exibe mensagem de erro
+          });
+      });
+    </script>
+
+    <div id="modalVenda" class="modal">
+      <div class="popup-venda">
+        <div class="popup-titulo-venda">
+          <span>Vender ativo</span>
+        </div>
+
+        <form id="formVenda">
+          {% csrf_token %}
+          <!-- Adicione um campo oculto para armazenar o user_id -->
+          <input type="hidden" name="user_id" value="{{ request.user.id }}" />
+
+          <label for="select_codigo">Selecione o ativo</label>
+          <select id="select_codigo" name="select_codigo" required>
+            {% for ticker in total_por_ticker.items %}
+            <option value="{{ ticker }}">{{ ticker }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="data_operacao">Data da operação</label>
+          <input type="date" id="data_operacao" name="data_operacao" required />
+
+          <label for="valor_unitario">Valor unitário</label>
+          <input type="number" id="valor_unitario" name="valor_unitario" step="0.01" placeholder="Ex: 4.50" required />
+
+          <label for="quantidade_total">Quantidade total</label>
+          <input type="number" id="quantidade_total" name="quantidade_total" required />
+
+          <div class="btn-forms">
+            <button class="btn-cancel-form" type="reset" id="closeModalBtnVenda">Cancelar</button>
+            <button class="btn-confirm-form" type="submit">Confirmar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('formVenda').addEventListener('submit', function(event) {
+          event.preventDefault(); // Impede o comportamento padrão do formulário
+
+          const formData = new FormData(this);
+          const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+          const user_id = formData.get('user_id'); // Obtém o user_id do formulário
+
+          fetch(`{% url 'submit_form_venda' user_id=user_id %}`, {  // Corrige a passagem do user_id na URL reversa
+              method: 'POST',
+              headers: {
+                  'X-CSRFToken': csrfToken
+              },
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log('Success:', data);
+              alert(data.message); // Exibe mensagem de sucesso
+
               // Fechar modal (opcional)
               document.getElementById('modalVenda').style.display = 'none';
-  
+
               // Resetar formulário (opcional)
               document.getElementById('formVenda').reset();
           })
@@ -227,7 +227,7 @@
               alert('Ocorreu um erro ao enviar o formulário.'); // Exibe mensagem de erro
           });
       });
-      </script>
+    </script>
 
     <div class="box-grafico-principal">
       <div class="grafico">
@@ -279,8 +279,8 @@
 
   <script src="{% static '/javascript/popup.js' %}"></script>
   <script>
-        function fetchData() {
-      var user_id = "{{ request.user_id }}";  // Supondo que você esteja passando o user_id através do template
+    function fetchData() {
+      var user_id = "{{ request.user.id }}";  // Supondo que você esteja passando o user_id através do template
 
       fetch("{% url 'chart_data' user_id %}".replace('user_id', user_id))
         .then((response) => response.json())

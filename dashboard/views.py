@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
+
+from dashboard.src.compra_venda import compra, venda
 from dashboard.src.login import login_user
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -24,7 +26,7 @@ def index(request, user_id):
         'cotacoes': cotacoes,
         'ativos': list(total_por_ticker.keys())
     }
-    print(context['ativos'])
+    #print(context['ativos'])
     return render(request, 'index.html', context)
 
 def login_view(request):
@@ -53,69 +55,34 @@ def index_view(request):
 
 
 @csrf_exempt
-def submit_form_compra(request):
+def submit_form_compra(request, user_id):
+
     if request.method == 'POST':
         data = request.POST
-        codigo_ativo = data.get('codigo_ativo')
-        descricao_ativo = data.get('descricao_ativo')
-        classe_risco = data.get('classe_risco')
-        setor = data.get('setor')
-        descricao_setor = data.get('descricao_setor')
-        data_operacao = data.get('data_operacao')
-        valor_unitario = data.get('valor_unitario')
-        quantidade_total = data.get('quantidade_total')
-
-        # Print data to console for debugging purposes
-        print('Dados recebidos para compra:', {
-            'codigo_ativo': codigo_ativo,
-            'descricao_ativo': descricao_ativo,
-            'classe_risco': classe_risco,
-            'setor': setor,
-            'descricao_setor': descricao_setor,
-            'data_operacao': data_operacao,
-            'valor_unitario': valor_unitario,
-            'quantidade_total': quantidade_total,
-        })
-
-        response_data = {
-            'message': 'Dados de compra recebidos com sucesso!',
-            'dados': {
-                'codigo_ativo': codigo_ativo,
-                'descricao_ativo': descricao_ativo,
-                'classe_risco': classe_risco,
-                'setor': setor,
-                'descricao_setor': descricao_setor,
-                'data_operacao': data_operacao,
-                'valor_unitario': valor_unitario,
-                'quantidade_total': quantidade_total,
-            }
-        }
-        return JsonResponse(response_data)
+        response = compra(
+            codigo_ativo=data.get('codigo_ativo'),
+            descricao_ativo=data.get('descricao_ativo'),
+            classe_risco=data.get('classe_risco'),
+            setor=data.get('setor'),
+            descricao_setor=data.get('descricao_setor'),
+            data_operacao=data.get('data_operacao'),
+            valor_unitario=data.get('valor_unitario'),
+            quantidade_total=data.get('quantidade_total'),
+            user_id=user_id
+        )
+        return JsonResponse(response)
     return JsonResponse({'error': 'Método não permitido'}, status=405)
 
 @csrf_exempt
-def submit_form_venda(request):
+def submit_form_venda(request, user_id):
     if request.method == 'POST':
         data = request.POST
-        select_codigo = data.get('select_codigo')
-        data_operacao = data.get('data_operacao')
-        valor_unitario = data.get('valor_unitario')
-        quantidade_total = data.get('quantidade_total')
-
-        print('Dados recebidos para venda:', {
-            'select_codigo': select_codigo,
-            'data_operacao': data_operacao,
-            'valor_unitario': valor_unitario,
-            'quantidade_total': quantidade_total,
-        })
-        response_data = {
-            'message': 'Dados de venda recebidos com sucesso!',
-            'dados': {
-                'select_codigo': select_codigo,
-                'data_operacao': data_operacao,
-                'valor_unitario': valor_unitario,
-                'quantidade_total': quantidade_total,
-            }
-        }
-        return JsonResponse(response_data)
+        response = venda(
+            select_codigo=data.get('select_codigo'),
+            data_operacao=data.get('data_operacao'),
+            valor_unitario=data.get('valor_unitario'),
+            quantidade_total=data.get('quantidade_total'),
+            user_id=user_id
+        )
+        return JsonResponse(response)
     return JsonResponse({'error': 'Método não permitido'}, status=405)
