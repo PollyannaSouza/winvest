@@ -89,3 +89,9 @@ def submit_form_venda(request, user_id):
         )
         return JsonResponse(response)
     return JsonResponse({'error': 'Método não permitido'}, status=405)
+
+def not_found_404(request, exception):
+    return render(request, '404.html')
+
+def not_found_500(request):
+    return render(request, '500.html')

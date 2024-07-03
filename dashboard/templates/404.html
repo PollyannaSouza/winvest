@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error 404</title>
+    <link rel="shortcut icon" href="{% static '/images/logo_final.png' %}" type="image/x-icon" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background-color: #e6fcfd;
+            color: #e6fcfd;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box-erro {
+            width: 500px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            border-radius: 16px;
+            background-color: #024f52;
+            box-shadow: 0px 0px 15px 1px rgba(2, 79, 82, 0.3);
+        }
+
+        .box-404 {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+
+        #return_error {
+            padding: 10px 10px 2px;
+            background-color: transparent;
+            border-bottom: 1px solid #e6fcfd;
+            color: #e6fcfd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box-erro">
+        <div class="box-404">
+            <h1>Página não encontrada.</h1>
+            <h3>(Erro 404)</h3>
+        </div>
+
+        <div class="box-voltar">
+            <h1>Está perdido?</h1>
+            <a href="{% url 'index' %}" >
+                <h3 id="return_error">Clique aqui para voltar</h3>
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>

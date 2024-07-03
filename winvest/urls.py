@@ -22,3 +22,6 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('chart_data/<str:user_id>/', views.chart_data, name='chart_data'),
 ]
+
+handler404 = "dashboard.views.not_found_404"
+handler500 = "dashboard.views.not_found_500"
