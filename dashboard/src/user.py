@@ -5,17 +5,23 @@ from django.db import connection
 
 
 def exec_query(query):
-    with connection.cursor() as cursor:
-        cursor.execute(query)
-        rows = cursor.fetchall()
-        columns = [col[0] for col in cursor.description]  # monta uma lista com as colunas da tabela do db
-        cursor.close()
-        return [dict(zip(columns, row)) for row in rows]
-
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            columns = [col[0] for col in cursor.description]  # monta uma lista com as colunas da tabela do db
+            cursor.close()
+            return [dict(zip(columns, row)) for row in rows]
+    except Exception as e:
+        print(e)
 
 def get_noticias(user_id):
-    carteiras_id = exec_query(query=f"SELECT id_carteira FROM dashboard_carteira where id_pessoa_id={user_id};")[0]
-    carteiras_id = carteiras_id['id_carteira']
+    carteira = exec_query(query=f"SELECT * FROM dashboard_carteira where id_pessoa_id={user_id};")[0]
+    carteiras_id = carteira['id_carteira']
+    carteiras_valor = float(carteira['valor_total_carteira'])
+
+    if carteiras_valor == 0:
+        return []
 
     operacao_id = exec_query(query=f"SELECT * FROM dashboard_carteiraoperacao where id_carteira_id = {carteiras_id};")
     ids_operacoes = [str(d['id_operacao_id']) for d in operacao_id]
@@ -41,27 +47,28 @@ def get_noticias(user_id):
 
 def get_total_por_ticker(user_id):
     result_operacoes = exec_query(query=f"""
-                            SELECT 
-                                dco.valor_total_ativo,
-                                dca.nome_categoria_ativo AS ativo_nome
-                            FROM
-                                dashboard_carteiraoperacao dco
-                                LEFT JOIN
-                                dashboard_carteira dc ON dc.id_carteira = dco.id_carteira_id
-                                LEFT JOIN
-                                dashboard_operacao do ON dco.id_operacao_id = do.id_operacao
-                                LEFT JOIN
-                                dashboard_ativo da ON do.ticker_id = da.ticker
-                                LEFT JOIN
-                                dashboard_categoriaativo dca ON da.id_categoria_ativo_id = dca.id_categoria_ativo
-                                LEFT JOIN
-                                dashboard_pessoa dp ON dc.id_pessoa_id = dp.id_pessoa
-                            WHERE
-                                dp.id_pessoa = {user_id};
-                            """)
-    result = {i["ativo_nome"]: float(i["valor_total_ativo"]) for i in result_operacoes}
+        SELECT 
+                dca.nome_categoria_ativo AS ativo_nome,
+                SUM(dco.valor_total_ativo) AS valor_total_somado
+            FROM
+                dashboard_carteiraoperacao dco
+                LEFT JOIN
+                dashboard_carteira dc ON dc.id_carteira = dco.id_carteira_id
+                LEFT JOIN
+                dashboard_operacao do ON dco.id_operacao_id = do.id_operacao
+                LEFT JOIN
+                dashboard_ativo da ON do.ticker_id = da.ticker
+                LEFT JOIN
+                dashboard_categoriaativo dca ON da.id_categoria_ativo_id = dca.id_categoria_ativo
+                LEFT JOIN
+                dashboard_pessoa dp ON dc.id_pessoa_id = dp.id_pessoa
+            WHERE
+                dp.id_pessoa = {user_id}
+            GROUP BY
+                dca.nome_categoria_ativo;
+                """)
+    result = {i["ativo_nome"]: float(i["valor_total_somado"]) for i in result_operacoes}
 
-    #print(f"RESULT_OPERACOES: {result}")
     return result
 
 def get_total_por_carteira(user_id):
@@ -74,10 +81,10 @@ def get_total_por_carteira(user_id):
                                 dashboard_pessoa dp ON dc.id_pessoa_id = dp.id_pessoa
                             WHERE
                                 dp.id_pessoa = {user_id};
-                            """)
-    result = {float(i["valor_total_carteira"]) for i in result_operacoes}
+                            """)[0]
+    print(result_operacoes)
+    result = float(result_operacoes['valor_total_carteira'])
 
-    #print(f"RESULT_OPERACOES: {result}")
     return result
 
 

@@ -153,6 +153,9 @@
 
               // Resetar formulário (opcional)
               document.getElementById('formCompra').reset();
+
+              // Recarregar a página
+              window.location.reload(); // Adiciona este comando para recarregar a página
           })
           .catch((error) => {
               console.error('Error:', error);
@@ -221,6 +224,9 @@
 
               // Resetar formulário (opcional)
               document.getElementById('formVenda').reset();
+
+              // Recarregar a página
+              window.location.reload(); // Adiciona este comando para recarregar a página
           })
           .catch((error) => {
               console.error('Error:', error);
@@ -232,7 +238,7 @@
     <div class="box-grafico-principal">
       <div class="grafico">
         <div class="titulo-grafico">
-          <h3>Distribuição de ativos em carteira | Total = R${{ total_por_carteira }}</h3>
+          <h3>Distribuição de ativos em carteira | Total = R$ {{ total_por_carteira }}</h3>
         </div>
         <div id="myChart"></div>
       </div>

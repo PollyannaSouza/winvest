@@ -17,6 +17,9 @@ def index(request, user_id):
     total_por_carteira = get_total_por_carteira(user_id)
     nome_usuario = nome_user(user_id)
     cotacoes = get_cotacoes(total_por_ticker.keys())
+    print(total_por_ticker)
+    print(total_por_carteira)
+    print('FIM DO GET INDEX')
     context = {
         'noticias': noticias,
         'total_por_ticker': total_por_ticker,
@@ -70,7 +73,7 @@ def submit_form_compra(request, user_id):
             quantidade_total=data.get('quantidade_total'),
             user_id=user_id
         )
-        return JsonResponse(response)
+        return JsonResponse(response, status=200)
     return JsonResponse({'error': 'Método não permitido'}, status=405)
 
 @csrf_exempt
