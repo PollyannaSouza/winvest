@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.contrib import messages
 
 from dashboard.src.compra_venda import compra, venda
 from dashboard.src.login import login_user
@@ -36,12 +37,13 @@ def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         senha = request.POST.get('senha')
-        try:
-            user_id = login_user(email, senha)
-            if user_id:
-                return redirect(reverse('index', kwargs={'user_id': user_id}))
-        except:
-            raise ValueError('Erro ao fazer o login')
+
+        user_id = login_user(email, senha)
+        print(user_id)
+        if user_id:
+            return redirect(reverse('index', kwargs={'user_id': user_id}))
+        else:
+            messages.error(request, 'Usuário ou senha incorretos.')
     return render(request, 'login.html')
 
 def chart_data(request, user_id):

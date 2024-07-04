@@ -21,6 +21,8 @@
   background-color: var(--bg-fundo-verde);
   height: 90vh;
   display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
 }
@@ -41,7 +43,7 @@
 }
 
 .box_logo {
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 
   & .logo_img > img {
     width: 60px;
@@ -57,6 +59,12 @@
   padding: 8px;
   color: var(--main-green);
   background-color: var(--ligth-green);
+}
+
+.box_button {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 #btn_login {
@@ -97,6 +105,21 @@ label {
   display: block;
   color: var(--ligth-green);
   padding-left: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 0px;
+  margin-top: 10px;
   font-weight: 700;
+}
+
+.alert {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.alert-danger {
+  font-weight: 600;
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
 }

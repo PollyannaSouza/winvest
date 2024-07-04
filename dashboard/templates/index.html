@@ -27,7 +27,7 @@
     </ul>
     <ul>
       <li>
-        <a href="/index.html" class="a selected">
+        <a href="{% url 'index' user_id %}" class="a selected">
           <i class="fa fa-home fa-2x"></i>
           <span class="nav-text"> Dashboard </span>
         </a>
@@ -60,7 +60,7 @@
 
     <ul class="logout">
       <li>
-        <a href="#">
+        <a href="{% url 'login' %}">
           <i class="fa fa-power-off fa-2x"></i>
           <span class="nav-text"> Sair </span>
         </a>
@@ -75,12 +75,12 @@
       <div class="box-operacoes">
         <div class="box-btn-adicionar-compra">
           <button class="btn-add-compra" id="openModalBtnCompra">
-            <span>+ Comprar ativo</span>
+            <span>+ Comprar</span>
           </button>
         </div>
         <div class="box-btn-adicionar-venda">
           <button class="btn-add-venda" id="openModalBtnVenda">
-            <span>- Vender ativo</span>
+            <span>- Vender</span>
           </button>
         </div>
       </div>
@@ -272,7 +272,7 @@
 
     <div class="box-news">
       <h2>Últimas notícias</h2>
-      {% for noticia in noticias|slice:"-2:" %}
+      {% for noticia in noticias|slice:"-4:" %}
       <div class="news">
         <h4>{{ noticia.data_publicacao }}</h4>
         <a href="{{ noticia.arquivos_news }}" target="_blank">

@@ -158,16 +158,16 @@
 .acao {
   display: inline-flex;
   justify-content: space-between;
-  background-color: var(--ligth-green);
+  background-color: var(--bg-fundo-verde);
   width: 100%;
   padding: 20px 20px;
   border-radius: 8px;
   cursor: pointer;
-
+/* 
   &.selected {
     background-color: var(--main-green);
     color: var(--ligth-green);
-  }
+  } */
 
   &:hover {
     & h2 {
